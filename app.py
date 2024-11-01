@@ -12,20 +12,21 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 from datetime import datetime
 from bson import ObjectId
+from os.path import join, dirname
 
 load_dotenv()  # Memuat file .env
 
 app = Flask(__name__)
 
 # Mengambil variabel dari .env
-mongo_user = os.getenv('MONGO_USER')
-mongo_password = os.getenv('MONGO_PASSWORD')
-mongo_cluster_url = os.getenv('MONGO_CLUSTER_URL')
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
+MONGODB_URL = os.getenv('MONGODB_URL')
+DB_NAME = os.getenv('DB_NAME')
 
-mongo_url = f'mongodb+srv://{mongo_user}:{mongo_password}@{mongo_cluster_url}/?retryWrites=true&w=majority'
-client = MongoClient(mongo_url)
-db = client.sparta_plus_week2
+client = MongoClient(MONGODB_URL)
+db = client[DB_NAME]
 
 
 @app.route('/')
