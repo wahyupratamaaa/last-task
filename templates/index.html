@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="Detail" />
+    <meta property="og:description" content=" ini Detail" />
+    <meta
+      property="og:image"
+      content="{{ url_for('static', filename='iconremove.png')}}"
+    />
+    <link
+      rel="shorcut icon"
+      href="{{url_for('static', filename='iconremove.png')}}"
+      type="image/x-icon"
+    />
+    <link
+      rel="icon"
+      href="{{url_for('static', filename='iconremove.png')}}"
+      type="image/x-icon"
+    />
+    <title>Detail</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <!-- <link
+      href="{{ url_for('static', filename='mystyle.css')}}"
+      rel="stylesheet"
+    /> -->
+
+    <style>
+      .curson-pointer {
+        cursor: pointer;
+      }
+      .wrap {
+        background-color: RGBA(232, 52, 78, 0.2);
+        height: 100%;
+        padding: 20px;
+      }
+      .banner {
+        width: 100%;
+        height: 200px;
+        background-image: url("../static/iconremove.png");
+        background-size: 150px;
+        background-position: center;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        background-color: white;
+      }
+      .container-input {
+        width: 80%;
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: white;
+        border: solid 1px gray;
+        border-radius: 10px;
+      }
+      span.example {
+        color: gray;
+        font-size: 14px;
+      }
+      .btn-sparta {
+        color: white;
+        background-color: red;
+        border: solid 1px black;
+      }
+      .btn-sparta-outline {
+        color: #e8344e;
+        background-color: transparent;
+        border-color: #e8344e;
+      }
+      .search-box {
+        width: 70%;
+        margin: 50px auto;
+        max-width: 700px;
+      }
+      .table {
+        width: 80%;
+        max-width: 800px;
+        margin: auto;
+        table-layout: fixed;
+        background-color: transparent;
+      }
+      .table th {
+        border-top-style: none;
+        background-color: transparent;
+      }
+      td {
+        background-color: white;
+        text-decoration: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .tbody-box td {
+        background-color: transparent;
+      }
+      .thead-light th {
+        text-transform: uppercase;
+      }
+      .thead-light {
+        border-bottom: 1px solid black;
+      }
+      tr.highlight > td {
+        background-color: orange;
+        color: white;
+      }
+      tr.highlight td > a {
+        color: white;
+      }
+
+      td > a,
+      a:visited,
+      a:hover,
+      a:active {
+        color: black;
+      }
+
+      thead:first-child tr:first-child th:first-child {
+        border-radius: 10px 0 0 0;
+      }
+
+      thead:first-child tr:first-child th:last-child {
+        border-radius: 0 10px 0 0;
+      }
+
+      tbody:last-child tr:last-child td:first-child {
+        border-radius: 0 0 0 10px;
+      }
+
+      tbody:last-child tr:last-child td:last-child {
+        border-radius: 0 0 10px 0;
+      }
+    </style>
+    <script>
+                 {% if msg %}
+                  //  window.location.href = '/error';
+                   alert('{{msg}}');
+                  // window.location.href = '/error?msg={{msg}}';
+                 {% endif %}
+
+                let word = {{ words | tojson  }};
+                console.log("ini data word", word);
+                word_list = [];
+                // console.log("ini word list", word_list);
+                for (let i = 0; i < word.length; i++) {
+                  word_list.push(word[i].word);
+                  console.log('word list',word_list);
+                  // tadi words jadi word
+                }
+            function find_word() {
+            let word = $('#input-word').val().toLowerCase().trim();
+            if (!word) {
+              alert('Please type a word');
+              return;
+            }
+            let row = $(`#word-${word}`);
+            if (row.length > 0) {
+              row.addClass('highlight');
+              row.siblings().removeClass('highlight');
+              row[0].scrollIntoView();
+            } else {
+              window.location.href = `/detail/${word}?status_give=new`;
+            }
+
+      }
+    </script>
+  </head>
+  <body>
+    <div class="banner" onclick="window.location.href='/detail'"></div>
+    <div class="wrap">
+      <div class="search-box d-flex justify-content-between gap-1">
+        <input
+          id="input-word"
+          class="form-control"
+          style="margin-left: 0.5rem"
+          ,
+          placeholder="Cari kata"
+        />
+        <button class="btn btn-light" onclick="find_word()">Search</button>
+      </div>
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col" style="width: 30%">word</th>
+            <th scope="col" style="width: 30%">meaning</th>
+          </tr>
+        </thead>
+        <tbody class="tbody-box">
+          {% for word_data in words%} {% set definition = word_data.definition%}
+          {%set word = word_data.word%}
+          <tr id="word-{{word}}">
+            <td><a href="/detail/{{word}}?status_give=old">{{word}}</a></td>
+            <td>{{definition}}</td>
+          </tr>
+          {% endfor%}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ss -->
+    <div class="container">
+      <footer class="py-5">
+        <div class="row justify-content-between">
+          <p>Halaman Index</p>
+          <div class="col-6 col-md-2 mb-3"></div>
+          <div class="col-md-5 offset-md-1 mb-3">
+            <form>
+              <h5>Temukan Hal Menarik Setiap Bulan!</h5>
+              <p>
+                Gabung bersama ribuan pelanggan yang tetap terhubung dengan
+                kami.
+              </p>
+              <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+                <label for="newsletter1" class="visually-hidden"
+                  >Email address</label
+                >
+                <input
+                  id="newsletter1"
+                  type="text"
+                  class="form-control"
+                  placeholder="Email address"
+                />
+                <button class="btn btn-primary" type="button">Subscribe</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="d-flex justify-between gap-2 cursor-pointer">
+          <a
+            href="/detail/example"
+            type="button"
+            class="btn"
+            data-bs-toggle="button"
+          >
+            <strong>Lihat Detail</strong>
+          </a>
+        </div>
+
+        <div
+          class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top"
+        >
+          <p>© 2024 Company Lx Internasional</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

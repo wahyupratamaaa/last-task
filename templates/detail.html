@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="Detail" />
+    <meta property="og:description" content=" ini Detail" />
+    <meta
+      property="og:image"
+      content="{{ url_for('static', filename='iconremove.png')}}"
+    />
+    <link
+      rel="shorcut icon"
+      href="{{url_for('static', filename='iconremove.png')}}"
+      type="image/x-icon"
+    />
+    <link
+      rel="icon"
+      href="{{url_for('static', filename='iconremove.png')}}"
+      type="image/x-icon"
+    />
+    <title>Detail</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <link
+      href="{{ url_for('static', filename='mystyle.css')}}"
+      rel="stylesheet"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      .curson-pointer {
+        cursor: pointer;
+      }
+      .wrap {
+        background-color: RGBA(232, 52, 78, 0.2);
+        height: 100%;
+      }
+      .banner {
+        width: 100%;
+        height: 200px;
+        background-image: url("../static/iconremove.png");
+        background-size: 150px;
+        background-position: center;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        background-color: white;
+        /* margin-bottom: 50px; */
+      }
+      .container-input {
+        width: 80%;
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: white;
+        border: solid 1px gray;
+        border-radius: 10px;
+      }
+      .container-inputan {
+        width: 80%;
+        margin: 50px auto;
+        /* border: solid 1px gray; */
+        padding: 20px;
+        font-family: "Poppins", sans-serif;
+      }
+      span.example {
+        color: gray;
+        font-size: 14px;
+      }
+      .btn-sparta {
+        color: white;
+        background-color: red;
+        border: solid 1px black;
+      }
+      .btn-sparta-outline {
+        color: #e8344e;
+        background-color: transparent;
+        border-color: #e8344e;
+      }
+      .search-box {
+        width: 70%;
+        margin: 50px auto;
+        max-width: 700px;
+      }
+      .table {
+        width: 80%;
+        max-width: 800px;
+        margin: auto;
+        table-layout: fixed;
+        background-color: transparent;
+      }
+      .table th {
+        border-top-style: none;
+        background-color: transparent;
+      }
+      td {
+        background-color: white;
+        text-decoration: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .tbody-box td {
+        background-color: transparent;
+      }
+      .thead-light th {
+        text-transform: uppercase;
+      }
+      .thead-light {
+        border-bottom: 1px solid black;
+      }
+      td > a,
+      a:visited,
+      a:hover,
+      a:active {
+        color: black;
+      }
+
+      thead:first-child tr:first-child th:first-child {
+        border-radius: 10px 0 0 0;
+      }
+
+      thead:first-child tr:first-child th:last-child {
+        border-radius: 0 10px 0 0;
+      }
+
+      tbody:last-child tr:last-child td:first-child {
+        border-radius: 0 0 0 10px;
+      }
+
+      tbody:last-child tr:last-child td:last-child {
+        border-radius: 0 0 10px 0;
+      }
+      .delete_id {
+        color: red;
+      }
+    </style>
+    <script>
+                       let word = "{{ keyword }}";
+                       console.log(word);
+
+                       $(document).ready(function (){
+                         get_examples(word);
+                       });
+
+                       function get_definition() {
+                         alert(keyword);
+
+                         let api_key = "543938be-681c-47e4-bfca-72041496f1b7";
+                         let url = `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${api_key}`;
+                         $.ajax({
+                           type: "GET",
+                           url: url,
+                           success: function (response) {
+                             console.log("response api", response);
+
+                             let def = response[0];
+                             let category = def.fl;
+                             let shortdef = def.shortdef[0];
+                             let date = def.date;
+
+                             let temp_html = `
+                               <div style="padding: 10px">
+                                 <i>${category}</i>
+                                 <br />
+                                 ${shortdef}
+                                 <br />
+                                 <span class="example">${date}</span>
+                               </div>`;
+
+                             let container = $("#definition");
+                             container.empty();
+                             container.append(temp_html);
+                           }
+                         });
+                       }
+
+                      function save_word() {
+                      let defs = {{ definition | tojson }};
+
+                      for(let i = 0;i < defs.length; i++){
+                          let def = defs[i];
+                           let category = def.fl;
+                            let shortdef = def.shortdef[0];
+                            let date = def.date;
+
+                            defs[i]={
+                              category: category,
+                              shortdef: shortdef,
+                              date:date
+                            }
+
+                      }
+                      let data = {
+                          word_give: word,
+                          definition_give: defs
+                      };
+
+                      $.ajax({
+                          type: 'POST',
+                          url: '/api/save_word',
+                          data: JSON.stringify(data),
+                          contentType: 'application/json',
+                          success: function(response) {
+                              if (response.result === 'success') {
+                                  alert(response.msg);
+                                  window.location.href = `/detail/${word}?status_give=old`;
+                              } else {
+                                  alert('Failed to save the word');
+                              }
+                          },
+                          error: function() {
+                              alert('Failed to save the word');
+                          }
+                      });
+                  }
+
+
+                  function delete_word() {
+                    $.ajax({
+                      type: 'POST',
+                      url: '/api/delete_word',
+                      data: {
+                        word: word,
+
+                      },
+                      contentType: 'application/json',
+                      success: function(response) {
+                        if (response.result === 'success') {
+                          alert(response.msg);
+                          window.location.href = `/`;
+                        } else {
+                          alert('Failed to delete the word');
+                        }
+                      },
+                      error: function() {
+                          alert('Failed to delete the word');
+                        }
+                      });
+
+
+                  }
+
+
+
+
+            function get_examples(word) {
+          let list = $("#example-list");
+          list.empty();
+
+          $.ajax({
+              type: "GET",
+              url: `/api/get_exs?word=${word}`, // Gunakan 'keyword' sesuai dengan rute
+              data: {},
+              success: function (response) {
+                  // console.log('anda masuk data',response);
+                  if (response.result === 'success') {
+                      let examples = response.examples; // Pastikan ini sesuai dengan respons
+                      let temp_html = '';
+
+                      // Pastikan contoh (examples) ada dan merupakan array
+                      if (Array.isArray(examples) && examples.length > 0) {
+                          for (let i = 0; i < examples.length; i++) {
+                              let example = examples[i]; // Ganti dari 'example' ke 'examples'
+                              let id = example.id; // Mengambil ID dari contoh
+                              let sentence = example.example; // Mengambil kalimat dari contoh
+                              temp_html += `
+                                  <li>
+                                      ${sentence}&nbsp;&nbsp;&nbsp;
+                                      <a href="javascript:void(0);" onclick="delete_ex('${id}')" class="delete_id">delete</a>
+                                  </li>
+                              `;
+                          }
+                      } else {
+                          temp_html = '<li style="color: red; font-size: 0.75rem" >anda belum memiliki catatan di <strong>{{keyword}}</strong></li>'; // Menangani kasus ketika tidak ada contoh
+                      }
+
+                      list.append(temp_html);
+                  } else {
+                      console.error("Error in response:", response); // Log jika tidak berhasil
+                      list.append('<li>Error fetching examples.</li>'); // Menangani kesalahan
+                  }
+              },
+              error: function (xhr, status, error) {
+                  console.error("AJAX Error:", error); // Log kesalahan AJAX
+                  list.append('<li>An error occurred while fetching examples.</li>'); // Menangani kesalahan
+              }
+          });
+      }
+
+
+
+                    function add_ex(){
+                   let new_ex = $('#new-example').val();
+                   console.log(new_ex);
+                    $.ajax({
+                      type: 'POST',
+                      url: `/api/save_ex`,
+                      data: {
+                        example: new_ex,
+                        keyword: word
+                      },
+                      success: function(response) {
+                        console.log(response)
+                        if (response.result === 'success') {
+                          alert(response.msg);
+                        }
+                        get_examples(word)
+
+
+                      }
+                    })
+                  }
+                  function delete_ex(id){
+                    console.log('deleting',id)
+                    $.ajax({
+                      type: 'POST',
+                      url: `/api/delete_ex`,
+                      data: {
+                        word: word,
+                        id: id
+                      },
+                      success: function(response) {
+                        console.log(response)
+
+                        if (response.result === 'success') {
+                          alert(response.msg);
+                          get_examples(word)
+                        }
+
+
+                      }
+                    })
+                  }
+    </script>
+  </head>
+  <body>
+    <div class="banner" onclick="window.location.href='/'"></div>
+    <div class="wrap">
+      <div class="container-input">
+        <div class="d-flex justify-content-between align-items-end">
+          <div>
+            <h1 id="word" style="display: inline">{{ keyword }}</h1>
+          </div>
+        </div>
+        <hr />
+        <div id="definition">
+          {% for def in definition %} {% set category = def.fl %} {% set
+          shortdef = def.shortdef[0] %} {% set date = def.date %}
+          <div style="padding: 10px; margin-bottom: 10px">
+            <i>{{ category }}</i>
+            <br />
+            {{ shortdef }}
+            <br />
+            <span class="example">{{ date }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        <hr />
+        {% if status == 'new' %}
+        <button
+          onclick="save_word()"
+          id="btn-save"
+          class="btn btn-sparta-outline btn-sm"
+        >
+          SAVE
+        </button>
+        {% else %}
+        <button
+          onclick="delete_word()"
+          id="btn-delete"
+          class="btn btn-sparta btn-sm"
+        >
+          DELETE
+        </button>
+        {% endif %}
+        <div id="example" class="container-inputan">
+          <h3 style="text-align: center; margin-bottom: 1rem">
+            Ketik catatan baru anda di -- {{ keyword }} --
+          </h3>
+          <ul id="example-list"></ul>
+
+          <div class="d-flex justify-content-between" style="margin-left: 20px">
+            <input
+              id="new-example"
+              class="form-control form-control-sm"
+              style="margin: 10px"
+            />
+            <button class="btn fw-bold" onclick="add_ex()">add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <div class="container">
+      <footer class="py-5">
+        <div class="row justify-content-between">
+          <p>Halaman Detail</p>
+          <div class="col-6 col-md-2 mb-3"></div>
+          <div class="col-md-5 offset-md-1 mb-3">
+            <form>
+              <h5>Temukan Hal Menarik Setiap Bulan!</h5>
+              <p>
+                Gabung bersama ribuan pelanggan yang tetap terhubung dengan
+                kami.
+              </p>
+              <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+                <label for="newsletter1" class="visually-hidden"
+                  >Email address</label
+                >
+                <input
+                  id="newsletter1"
+                  type="text"
+                  class="form-control"
+                  placeholder="Email address"
+                />
+                <button class="btn btn-primary" type="button">Subscribe</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="d-flex gap-2 cursor-pointer">
+          <a href="/" type="button" class="btn" data-bs-toggle="button">
+            <i class="fas fa-arrow-left"></i> <strong>Kembali</strong>
+          </a>
+        </div>
+
+        <div
+          class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top"
+        >
+          <p>© 2024 Company Lx Internasional</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
