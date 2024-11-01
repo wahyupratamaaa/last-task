@@ -21,7 +21,7 @@ app = Flask(__name__)
 mongo_user = os.getenv('MONGO_USER')
 mongo_password = os.getenv('MONGO_PASSWORD')
 mongo_cluster_url = os.getenv('MONGO_CLUSTER_URL')
-api_key = os.getenv('DICTIONARY_API_KEY')
+
 
 mongo_url = f'mongodb+srv://{mongo_user}:{mongo_password}@{mongo_cluster_url}/?retryWrites=true&w=majority'
 client = MongoClient(mongo_url)
